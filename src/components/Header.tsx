@@ -1,5 +1,5 @@
 import { Shield } from "lucide-react";
-import { semanas, serie } from "@/data/devocionales";
+import { semanas, serie, versiculoDestacado } from "@/data/devocionales";
 import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
@@ -11,6 +11,7 @@ export default function Header() {
 
   return (
     <header className="hero">
+      <Shield className="hero-watermark" strokeWidth={0} fill="currentColor" aria-hidden="true" />
       <div className="hero-top">
         <div className="hero-top-left">
           <span className="hero-icon">
@@ -22,6 +23,10 @@ export default function Header() {
       </div>
       <h1>{serie.titulo}</h1>
       <p className="dek">{serie.descripcion}</p>
+      <blockquote className="verse">
+        <p>&ldquo;{versiculoDestacado.texto}&rdquo;</p>
+        <cite>{versiculoDestacado.referencia}</cite>
+      </blockquote>
       <div className="progress">
         <div className="progress-track">
           <div className="progress-fill" style={{ width: `${progresoPct}%` }} />

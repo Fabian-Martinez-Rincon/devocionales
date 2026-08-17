@@ -10,6 +10,11 @@ export const serie = {
   descripcion: 'Cronograma de la serie "Las Parábolas" — un pasaje por día, con fechas y responsables definidos.',
 };
 
+export const versiculoDestacado = {
+  texto: "Tomad el yelmo de la salvación, y la espada del Espíritu, que es la palabra de Dios.",
+  referencia: "Efesios 6:17",
+};
+
 const principales: BancoItem[] = [
   { texto: "Los dos cimientos: la roca y la arena", referencia: "Mateo 7:24-27; Lucas 6:46-49" },
   { texto: "El remiendo nuevo y los odres viejos", referencia: "Mateo 9:16-17; Marcos 2:21-22; Lucas 5:36-39" },

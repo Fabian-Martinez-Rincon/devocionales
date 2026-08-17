@@ -50,7 +50,6 @@ export default function Cronograma() {
               <ChevronLeft size={16} strokeWidth={2.25} />
               <span>Anterior</span>
             </button>
-            <div className="pagination-position"><strong>Semana {semana.numero}</strong><span>{semana.meta}</span></div>
             <button type="button" onClick={() => setIndice((valor) => valor + 1)} disabled={indice === semanas.length - 1}>
               <span>Siguiente</span>
               <ChevronRight size={16} strokeWidth={2.25} />
