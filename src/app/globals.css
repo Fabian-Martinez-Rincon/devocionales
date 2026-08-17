@@ -1,33 +1,41 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f1f0ea;
-  --surface: #fffefb;
-  --surface-alt: #e7e4d8;
-  --text: #26241d;
-  --text-muted: #6b6858;
-  --border: #dad6c7;
-  --accent: #4a6741;
-  --accent-soft: #e1e8da;
-  --accent-strong: #33492c;
-  --amber: #a8763e;
+  --bg: #ffffff;
+  --surface: #faf9f7;
+  --surface-alt: #f1efe9;
+  --text: #1b2a41;
+  --text-muted: #5b6b80;
+  --border: #dde2e8;
+  --accent: #a9772f;
+  --accent-soft: #f6eedd;
+  --accent-strong: #7a551f;
+  --steel: #4a5a70;
+  --steel-soft: #e9edf1;
+  --steel-strong: #2e3b4e;
   --font-display: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
   --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 35, 0.06), 0 1px 1px rgba(15, 23, 35, 0.04);
+  --shadow-md: 0 4px 10px rgba(15, 23, 35, 0.08), 0 10px 24px rgba(15, 23, 35, 0.06);
+  --shadow-lift: 0 10px 20px rgba(15, 23, 35, 0.12), 0 3px 8px rgba(15, 23, 35, 0.08);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #16150f;
-    --surface: #201f18;
-    --surface-alt: #29281f;
-    --text: #ede9dd;
-    --text-muted: #a8a48f;
-    --border: #3a3729;
-    --accent: #8fb37d;
-    --accent-soft: #263323;
-    --accent-strong: #aad099;
-    --amber: #d4a35f;
-  }
+:root[data-theme="dark"] {
+  --bg: #10141c;
+  --surface: #171f2b;
+  --surface-alt: #1d2735;
+  --text: #f2eee2;
+  --text-muted: #93a0b0;
+  --border: #2a3648;
+  --accent: #d9a94f;
+  --accent-soft: #362a17;
+  --accent-strong: #e7c17a;
+  --steel: #7c8fa6;
+  --steel-soft: #1e2a3a;
+  --steel-strong: #b7c6d8;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.32), 0 10px 24px rgba(0, 0, 0, 0.22);
+  --shadow-lift: 0 12px 24px rgba(0, 0, 0, 0.4), 0 3px 10px rgba(0, 0, 0, 0.3);
 }
 
 * {
@@ -38,11 +46,23 @@ html,
 body {
   background: var(--bg);
   color: var(--text);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 body {
   font-family: var(--font-body);
   line-height: 1.55;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 main {
@@ -53,9 +73,45 @@ main {
 }
 
 header.hero {
+  position: relative;
   padding: 52px 0 30px;
-  border-bottom: 1px solid var(--border);
   margin-bottom: 36px;
+}
+
+header.hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent 75%);
+}
+
+.hero-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.hero-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.icon-badge {
+  display: inline-flex;
+  color: var(--accent-strong);
+  flex: none;
 }
 
 .eyebrow {
@@ -66,6 +122,10 @@ header.hero {
   color: var(--accent);
   font-weight: 600;
   margin: 0 0 14px;
+}
+
+.hero-top .eyebrow {
+  margin: 0;
 }
 
 h1 {
@@ -101,8 +161,9 @@ h1 {
 
 .progress-fill {
   height: 100%;
-  background: var(--accent);
+  background: linear-gradient(90deg, var(--accent), var(--accent-strong));
   border-radius: 999px;
+  transition: width 0.3s ease;
 }
 
 .progress-label {
@@ -151,17 +212,13 @@ section.week {
 }
 
 .badge.done {
-  background: var(--accent-soft);
-  color: var(--accent-strong);
+  background: var(--steel-soft);
+  color: var(--steel-strong);
 }
 .badge.now {
   background: var(--accent);
   color: var(--surface);
-}
-.badge.next {
-  background: var(--surface-alt);
-  color: var(--text-muted);
-  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
 }
 .badge.pending {
   background: transparent;
@@ -174,6 +231,11 @@ section.week {
   border: 1px solid var(--border);
   border-radius: 10px;
   background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.table-wrap tbody tr {
+  transition: background-color 0.12s ease;
 }
 
 table {
@@ -204,6 +266,9 @@ tbody tr:last-child td {
 }
 tbody tr:nth-child(even) {
   background: var(--surface-alt);
+}
+.table-wrap tbody tr:hover {
+  background: var(--accent-soft);
 }
 
 td.parabola {
@@ -240,6 +305,14 @@ td.versiculo {
   border-radius: 10px;
   background: var(--surface);
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.day-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent);
 }
 
 section.week.now .day-card {
@@ -283,10 +356,11 @@ section.week.now .day-card {
   border-radius: 999px;
   cursor: pointer;
   font: inherit;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
 }
 
-.week-pagination button { padding: 9px 14px; font-size: 13px; }
-.week-pagination button:hover:not(:disabled), .week-dots button:hover { border-color: var(--accent); }
+.week-pagination button { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; font-size: 13px; }
+.week-pagination button:hover:not(:disabled), .week-dots button:hover { border-color: var(--accent); color: var(--accent-strong); }
 .week-pagination button:disabled { cursor: not-allowed; opacity: 0.4; }
 
 .pagination-position {
@@ -351,14 +425,54 @@ section.week.now .day-card {
 }
 
 .day-value.asignado {
-  color: var(--text-muted);
-  font-weight: 600;
+  display: inline-flex;
+  align-self: flex-start;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 13px;
 }
 
 .day-value.asignado.tbd {
+  background: transparent;
+  color: var(--text-muted);
   font-style: italic;
   font-weight: 400;
   opacity: 0.75;
+  padding: 0;
+}
+
+.week-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.copy-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 12.5px;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.copy-button:hover {
+  border-color: var(--accent);
+}
+
+.copy-button.copiado {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-strong);
 }
 
 .pending-note {
@@ -389,6 +503,13 @@ details.bank-group {
   border-radius: 10px;
   margin-bottom: 10px;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+details.bank-group:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent);
 }
 
 details.bank-group summary {
@@ -400,28 +521,27 @@ details.bank-group summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
 }
 
 details.bank-group summary::-webkit-details-marker {
   display: none;
 }
 
-details.bank-group summary::after {
-  content: "+";
-  font-family: var(--font-display);
-  font-size: 18px;
+details.bank-group summary .chevron {
   color: var(--accent);
-  transform: rotate(0deg);
-  transition: transform 0.15s ease;
+  flex: none;
+  transition: transform 0.2s ease;
 }
 
-details.bank-group[open] summary::after {
-  transform: rotate(45deg);
+details.bank-group[open] summary .chevron {
+  transform: rotate(180deg);
 }
 
 details.bank-group .table-wrap {
   border: none;
   border-radius: 0;
+  box-shadow: none;
   border-top: 1px solid var(--border);
 }
 
@@ -439,12 +559,31 @@ details.bank-group .table-wrap {
 .chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 999px;
-  padding: 5px 10px 5px 12px;
+  padding: 5px 10px 5px 6px;
   font-size: 13px;
+}
+
+.chip-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 21px;
+  height: 21px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.chip-button.active .chip-avatar {
+  background: var(--accent);
+  color: var(--surface);
 }
 
 .chip strong {
@@ -502,29 +641,80 @@ details.bank-group .table-wrap {
   margin-bottom: 12px;
 }
 
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title h2 {
+  margin: 0;
+}
+
+.section-title .eyebrow {
+  margin: 0;
+}
+
 .section-heading {
   margin: 40px 0 16px;
 }
 
-details.bank-group.section-group summary {
+.filtro-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.filtro-card {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  padding: 10px 12px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.filtro-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent);
+}
+
+.filtro-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
   font-family: var(--font-display);
-  font-size: 18px;
+  font-weight: 600;
+  font-size: 13.5px;
 }
 
-.pasadas-list {
-  padding: 4px 18px 18px;
-  border-top: 1px solid var(--border);
+.filtro-card-head .badge {
+  font-size: 9px;
+  padding: 2px 7px;
 }
 
-.pasadas-list section.week {
-  margin-bottom: 20px;
+.filtro-card-date {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
 }
 
-.pasadas-list section.week:last-child {
-  margin-bottom: 0;
+.filtro-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 2px;
 }
 
 footer {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   margin-top: 52px;
   padding-top: 20px;
   border-top: 1px solid var(--border);
@@ -532,12 +722,24 @@ footer {
   color: var(--text-muted);
 }
 
+footer p {
+  margin: 0;
+}
+
+.footer-icon {
+  margin-top: 1px;
+}
+
 a {
   color: var(--accent-strong);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  details.bank-group summary::after {
+  details.bank-group summary .chevron {
+    transition: none;
+  }
+  .day-card,
+  .filtro-card {
     transition: none;
   }
 }

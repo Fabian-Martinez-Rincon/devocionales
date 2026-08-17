@@ -1,4 +1,6 @@
+import { Shield } from "lucide-react";
 import { semanas, serie } from "@/data/devocionales";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
   const total = semanas.length;
@@ -9,7 +11,15 @@ export default function Header() {
 
   return (
     <header className="hero">
-      <p className="eyebrow">{serie.eyebrow}</p>
+      <div className="hero-top">
+        <div className="hero-top-left">
+          <span className="hero-icon">
+            <Shield size={17} strokeWidth={2} />
+          </span>
+          <p className="eyebrow">{serie.eyebrow}</p>
+        </div>
+        <ThemeToggle />
+      </div>
       <h1>{serie.titulo}</h1>
       <p className="dek">{serie.descripcion}</p>
       <div className="progress">
