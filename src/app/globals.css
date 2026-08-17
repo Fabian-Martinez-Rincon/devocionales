@@ -257,6 +257,62 @@ section.week.now .day-card {
   padding: 10px 14px;
   border-bottom: 1px solid var(--border);
   background: var(--surface-alt);
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.day-card-head time {
+  color: var(--accent-strong);
+  font-variant-numeric: tabular-nums;
+}
+
+.week-pagination {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 28px;
+}
+
+.week-pagination button,
+.week-dots button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.week-pagination button { padding: 9px 14px; font-size: 13px; }
+.week-pagination button:hover:not(:disabled), .week-dots button:hover { border-color: var(--accent); }
+.week-pagination button:disabled { cursor: not-allowed; opacity: 0.4; }
+
+.pagination-position {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 13px;
+}
+
+.pagination-position span { color: var(--text-muted); }
+
+.week-dots {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 4px 0 38px;
+}
+
+.week-dots button { width: 32px; height: 32px; font-size: 12px; }
+.week-dots button.active { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+
+@media (max-width: 520px) {
+  .week-pagination { grid-template-columns: 1fr 1fr; }
+  .pagination-position { grid-column: 1 / -1; grid-row: 1; }
 }
 
 .day-card-body {

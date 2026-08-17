@@ -7,70 +7,30 @@ import ParticipantesFilter from "./ParticipantesFilter";
 import WeekSection from "./WeekSection";
 
 export default function Cronograma() {
+  const encontrada = semanas.findIndex((semana) => semana.estado === "actual");
+  const [indice, setIndice] = useState(encontrada < 0 ? 0 : encontrada);
   const [filtro, setFiltro] = useState<string | null>(null);
   const participantes = useMemo(() => getParticipantes(semanas), []);
-
-  const semanaActual = semanas.find((s) => s.estado === "actual");
-  const semanasPasadas = semanas.filter((s) => s.estado === "hecha");
-  const semanasProximas = semanas.filter(
-    (s) => s.estado === "propuesta" && (!semanaActual || s.numero > semanaActual.numero)
-  );
-
-  const diasActualFiltrados = semanaActual?.dias
-    ? filtro
-      ? semanaActual.dias.filter((d) => d.asignado === filtro)
-      : semanaActual.dias
-    : [];
-
-  const hayProximasParaFiltro = semanasProximas.some((s) => s.dias?.some((d) => d.asignado === filtro));
-
-  const semanasPasadasFiltradas = filtro
-    ? semanasPasadas.filter((s) => s.dias?.some((d) => d.asignado === filtro))
-    : semanasPasadas;
+  const semana = semanas[indice];
 
   return (
     <>
       <ParticipantesFilter participantes={participantes} filtro={filtro} onFiltroChange={setFiltro} />
-
-      {semanaActual && (
-        <div className="section-group">
-          <p className="eyebrow section-heading">Esta semana</p>
-          {filtro && diasActualFiltrados.length === 0 ? (
-            <div className="pending-note">
-              <strong>{filtro}</strong> no tiene devocionales asignados esta semana.
-            </div>
-          ) : (
-            <WeekSection semana={semanaActual} filtro={filtro} />
-          )}
-        </div>
-      )}
-
-      {semanasProximas.length > 0 && (
-        <div className="section-group">
-          <p className="eyebrow section-heading">Próximas semanas</p>
-          {filtro && !hayProximasParaFiltro && (
-            <div className="pending-note">
-              Todavía no hay devocionales de próximas semanas asignados a <strong>{filtro}</strong>.
-            </div>
-          )}
-          {semanasProximas.map((semana) => (
-            <WeekSection key={semana.numero} semana={semana} filtro={filtro} />
-          ))}
-        </div>
-      )}
-
-      {semanasPasadasFiltradas.length > 0 && (
-        <details className="bank-group section-group" open={!!filtro} key={filtro ?? "todos"}>
-          <summary>
-            {filtro ? `Semanas pasadas de ${filtro}` : `Semanas pasadas (${semanasPasadas.length})`}
-          </summary>
-          <div className="pasadas-list">
-            {semanasPasadasFiltradas.map((semana) => (
-              <WeekSection key={semana.numero} semana={semana} filtro={filtro} />
-            ))}
-          </div>
-        </details>
-      )}
+      <nav className="week-pagination" aria-label="Navegación entre semanas">
+        <button type="button" onClick={() => setIndice((valor) => valor - 1)} disabled={indice === 0}>← Anterior</button>
+        <div className="pagination-position"><strong>Semana {semana.numero}</strong><span>{semana.meta}</span></div>
+        <button type="button" onClick={() => setIndice((valor) => valor + 1)} disabled={indice === semanas.length - 1}>Siguiente →</button>
+      </nav>
+      {filtro && !semana.dias.some((dia) => dia.asignado === filtro) ? (
+        <div className="pending-note"><strong>{filtro}</strong> no tiene un devocional asignado en esta semana.</div>
+      ) : <WeekSection semana={semana} filtro={filtro} />}
+      <div className="week-dots" aria-label="Ir a una semana">
+        {semanas.map((item, itemIndice) => (
+          <button type="button" key={item.numero} className={itemIndice === indice ? "active" : ""}
+            onClick={() => setIndice(itemIndice)} aria-label={`Ir a la semana ${item.numero}`}
+            aria-current={itemIndice === indice ? "page" : undefined}>{item.numero}</button>
+        ))}
+      </div>
     </>
   );
 }
